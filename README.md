@@ -8,10 +8,10 @@
 <br />
 4.- Las tablas se guardan en tables/
 <br />
-5.- Formato csv Fuente S1:
-	a.- (unicast/broadcast, Layer Protocol) | probabilidad
+5.- Formato csv Fuente S1:<br />
+	a.- (unicast/broadcast, Layer Protocol) | probabilidad<br />
 	b.- Entropia
 <br />
-6.- Formato csv Fuente S2:
-	a.- (IP source, IP dest) | probabilidad
+6.- Formato csv Fuente S2:<br />
+	a.- (IP source, IP dest) | probabilidad<br />
 	b.- Entropia
