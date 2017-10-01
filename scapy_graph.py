@@ -26,21 +26,26 @@ class Source1():
 
     def sourceCount(self):
         source = []
+        unicast = 0
+        brodcast = 0
         for packet in self.capture:
             protocols = list(expand(packet))
             for pr in protocols:
                 if not pr in ['Ethernet', 'IP', 'IPv6']:
                     if packet.dst == "ff:ff:ff:ff:ff:ff":
                         destKind = "broadcast"
+                        brodcast += 1
                     else:
                         destKind = "unicast"
+                        unicast += 1
                     source.append(str((destKind, pr)).replace("'", ""))
                     break
         count = Counter(source)
-        return count
+ 
+        return count, unicast, brodcast
 
     def percentagePlot(self):
-        counter = self.sourceCount()
+        counter, unicast, brodcast = self.sourceCount()
         keys = counter.keys()
         values = counter.values()
         total = sum(values)
@@ -55,8 +60,29 @@ class Source1():
                 yaxis={'title':'Porcentaje'})
         fig = go.Figure(data=data, layout=layout)
         return fig
+    
+    def infoPlot(self):
+        counter, unicast, brodcast = self.sourceCount()
+        keys = counter.keys()
+        values = counter.values()
+        total = sum(values)
+        percentages = [amount*100/total for amount in values]
+        trace = go.Bar(x = keys, y = percentages)
 
+        labels = ['Unicast', 'Brodcast']
+        values = [unicast, brodcast]
+        trace2 = go.Pie(labels=labels, values=values)
 
+        data = [trace, trace2]
+        layout = go.Layout(
+                title='Fuente S1: Porcentaje de cada simbolo',
+                width=1280,
+                height=720,
+                xaxis={'title':'Simbolos'},
+                yaxis={'title':'Porcentaje'})
+        fig = go.Figure(data=data, layout=layout)
+        return fig
+    
 
 
 
