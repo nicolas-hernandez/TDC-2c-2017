@@ -9,7 +9,7 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 
 #Wat do
-import plotly 
+import plotly
 plotly.tools.set_credentials_file(username='nicoh22', api_key='ZCBvY2IQs9nlGOgid8Ua')
 
 conf.verb = 0
@@ -38,16 +38,21 @@ class Source1():
                     break
         count = Counter(source)
         return count
-    
+
     def percentagePlot(self):
-        counter = self.sourceCount() 
+        counter = self.sourceCount()
         keys = counter.keys()
         values = counter.values()
         total = sum(values)
         percentages = [amount*100/total for amount in values]
         trace = go.Bar(x = keys, y = percentages)
         data = [trace]
-        layout = go.Layout(title='A Simple Plot', width=800, height=640)
+        layout = go.Layout(
+                title='Fuente S1: Porcentaje de cada simbolo',
+                width=1280,
+                height=720,
+                xaxis={'title':'Simbolos'},
+                yaxis={'title':'Porcentaje'})
         fig = go.Figure(data=data, layout=layout)
         return fig
 
@@ -66,5 +71,6 @@ if __name__ == "__main__":
     pcap = rdpcap(args.file)
     S1 = Source1(pcap)
     figS1 = S1.percentagePlot()
-    py.image.save_as(figS1, filename='a-simple-plot.png')
+    S1filename = args.file.replace('pcap', 'png')
+    py.image.save_as(figS1, filename=S1filename)
     #Source2(pcap) sale alta superclase aca
