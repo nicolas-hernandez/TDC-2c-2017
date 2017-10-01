@@ -22,71 +22,99 @@ def expand(x):
 class Source1():
 
     def __init__(self, pcap):
-        self.capture = pcap
-
-    def sourceCount(self):
         source = []
-        unicast = 0
-        brodcast = 0
-        for packet in self.capture:
+        self.nUnicastMessages = 0
+        self.nBrodcastMessages = 0
+
+        for packet in pcap:
             protocols = list(expand(packet))
             for pr in protocols:
                 if not pr in ['Ethernet', 'IP', 'IPv6']:
                     if packet.dst == "ff:ff:ff:ff:ff:ff":
                         destKind = "broadcast"
-                        brodcast += 1
+                        self.nBrodcastMessages += 1
                     else:
                         destKind = "unicast"
-                        unicast += 1
+                        self.nUnicastMessages += 1
                     source.append(str((destKind, pr)).replace("'", ""))
                     break
-        count = Counter(source)
- 
-        return count, unicast, brodcast
+        self.fontCount = Counter(source)
+        self.entropy = reduce((lambda x, v: x + Ei(v, len(pcap))), self.fontCount.itervalues(), 0)
 
-    def percentagePlot(self):
-        counter, unicast, brodcast = self.sourceCount()
-        keys = counter.keys()
-        values = counter.values()
-        total = sum(values)
-        percentages = [amount*100/total for amount in values]
-        trace = go.Bar(x = keys, y = percentages)
+        
+
+    def probabilityPlot(self):
+        
+        keys = self.fontCount.keys()
+        values = self.fontCount.values() 
+        probs = [P(amount, sum(values)) for amount in values]
+        trace = go.Bar(x = keys, y = probs)
         data = [trace]
         layout = go.Layout(
-                title='Fuente S1: Porcentaje de cada simbolo',
+                title='Fuente S1: Probabilidad de cada simbolo',
                 width=1280,
                 height=720,
-                xaxis={'title':'Simbolos'},
-                yaxis={'title':'Porcentaje'})
+                xaxis={'title':'Simbolo'},
+                yaxis={'title':'Probabilidad'})
         fig = go.Figure(data=data, layout=layout)
         return fig
     
-    def infoPlot(self):
-        counter, unicast, brodcast = self.sourceCount()
-        keys = counter.keys()
-        values = counter.values()
-        total = sum(values)
-        percentages = [amount*100/total for amount in values]
-        trace = go.Bar(x = keys, y = percentages)
-
+    def distributionPlot(self):
+       
         labels = ['Unicast', 'Brodcast']
-        values = [unicast, brodcast]
-        trace2 = go.Pie(labels=labels, values=values)
+        values = [self.nUnicastMessages, self.nBrodcastMessages]
+        trace = go.Pie(labels=labels, values=values)
 
-        data = [trace, trace2]
+        data = [trace]
         layout = go.Layout(
-                title='Fuente S1: Porcentaje de cada simbolo',
+                title='Fuente S1: Distribucion entre unicast y brodcast',
                 width=1280,
-                height=720,
-                xaxis={'title':'Simbolos'},
-                yaxis={'title':'Porcentaje'})
+                height=720)
         fig = go.Figure(data=data, layout=layout)
         return fig
-    
 
+    def informationPlot(self):
+        keys = self.fontCount.keys()
+        values = self.fontCount.values()
+        #Calculating each symbol's information
+        probs = [I(P(amount,sum(values))) for amount in values]
+        trace = go.Bar(name="Informacion x simbolo",x = keys, y = probs)
+        #Magic to show a constant for the entropy
+        trace2 = go.Scatter(name="Entropia",x = [keys[0],keys[len(keys)-1]], y = [self.entropy, self.entropy])
+        data = [trace,trace2]
+        layout = go.Layout(
+                title='Fuente S1: Informacion de cada simbolo',
+                width=1280,
+                height=720,
+                xaxis={'title':'Simbolo'},
+                yaxis={'title':'Informacion'})
+        fig = go.Figure(data=data, layout=layout)
+        return fig
+'''
+Encapsulation of division for clarification
+'''
+def P(x, total):
+	return x/float(total)
 
+'''
+Given a probability of a symbol returns the information of the symbol 
+'''
+def I(p):
+	return -math.log(p, 2)
 
+'''
+Symbol entropy
+'''
+def Ei(x, total):
+	pi = P(x, total)
+	return pi*I(pi)
 
+'''
+Plots figure into the file named <plot_name>_<input_file_name> 
+'''
+def plot_n_save(figure, plot_name, input_file_name):
+    name = plot_name+"_" + input_file_name.replace('pcap', 'png') 
+    py.image.save_as(figure, filename=name)
 
 if __name__ == "__main__":
     #Parse command line arguments
@@ -96,7 +124,8 @@ if __name__ == "__main__":
 
     pcap = rdpcap(args.file)
     S1 = Source1(pcap)
-    figS1 = S1.percentagePlot()
-    S1filename = args.file.replace('pcap', 'png')
-    py.image.save_as(figS1, filename=S1filename)
+    
+    plot_n_save(S1.probabilityPlot(), "probability",args.file)
+    plot_n_save(S1.informationPlot(), "information",args.file)
+    plot_n_save(S1.distributionPlot(), "distribution",args.file)
     #Source2(pcap) sale alta superclase aca
