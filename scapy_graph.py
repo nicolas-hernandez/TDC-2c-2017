@@ -56,8 +56,8 @@ class Source1():
                 title='Fuente S1: Probabilidad de cada simbolo',
                 width=1280,
                 height=720,
-                xaxis={'title':'Simbolo','type':'log','autorange':True},
-                yaxis={'title':'Probabilidad'})
+                xaxis={'title':'Simbolo'},
+                yaxis={'title':'Probabilidad','type':'log','autorange':True})
         fig = go.Figure(data=data, layout=layout)
         return fig
     
