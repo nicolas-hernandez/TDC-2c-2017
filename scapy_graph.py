@@ -1,3 +1,4 @@
+
 from scapy.all import *
 from sets import Set
 from collections import Counter
@@ -38,15 +39,16 @@ class Source1():
                         self.nUnicastMessages += 1
                     source.append(str((destKind, pr)).replace("'", ""))
                     break
-        self.fontCount = Counter(source)
-        self.entropy = reduce((lambda x, v: x + Ei(v, len(pcap))), self.fontCount.itervalues(), 0)
+        self.sourceCount = Counter(source)
+        self.entropy = reduce((lambda x, v: x + Ei(v, len(pcap))), self.sourceCount.itervalues(), 0)
+        self.maxEntropy = math.log(len(self.sourceCount.keys()), 2) 
 
         
 
     def probabilityPlot(self):
         
-        keys = self.fontCount.keys()
-        values = self.fontCount.values() 
+        keys = self.sourceCount.keys()
+        values = self.sourceCount.values() 
         probs = [P(amount, sum(values)) for amount in values]
         trace = go.Bar(x = keys, y = probs)
         data = [trace]
@@ -54,34 +56,35 @@ class Source1():
                 title='Fuente S1: Probabilidad de cada simbolo',
                 width=1280,
                 height=720,
-                xaxis={'title':'Simbolo'},
+                xaxis={'title':'Simbolo','type':'log','autorange':True},
                 yaxis={'title':'Probabilidad'})
         fig = go.Figure(data=data, layout=layout)
         return fig
     
     def distributionPlot(self):
        
-        labels = ['Unicast', 'Brodcast']
+        labels = ['Unicast', 'Broadcast']
         values = [self.nUnicastMessages, self.nBrodcastMessages]
         trace = go.Pie(labels=labels, values=values)
 
         data = [trace]
         layout = go.Layout(
-                title='Fuente S1: Distribucion entre unicast y brodcast',
+                title='Fuente S1: Distribucion entre unicast y broadcast',
                 width=1280,
                 height=720)
         fig = go.Figure(data=data, layout=layout)
         return fig
 
     def informationPlot(self):
-        keys = self.fontCount.keys()
-        values = self.fontCount.values()
+        keys = self.sourceCount.keys()
+        values = self.sourceCount.values()
         #Calculating each symbol's information
         probs = [I(P(amount,sum(values))) for amount in values]
-        trace = go.Bar(name="Informacion x simbolo",x = keys, y = probs)
+        informationTrace = go.Bar(name="Informacion x simbolo",x = keys, y = probs)
         #Magic to show a constant for the entropy
-        trace2 = go.Scatter(name="Entropia",x = [keys[0],keys[len(keys)-1]], y = [self.entropy, self.entropy])
-        data = [trace,trace2]
+        entropyTrace = go.Scatter(name="Entropia",x = [keys[0],keys[len(keys)-1]], y = [self.entropy, self.entropy])
+        maxEntropyTrace = go.Scatter(name="Entropia M\'axima",x = [keys[0],keys[len(keys)-1]], y = [self.maxEntropy, self.maxEntropy])
+        data = [informationTrace, entropyTrace, maxEntropyTrace]
         layout = go.Layout(
                 title='Fuente S1: Informacion de cada simbolo',
                 width=1280,
