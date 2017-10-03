@@ -26,7 +26,12 @@ class Source1():
         source = []
         self.nUnicastMessages = 0
         self.nBrodcastMessages = 0
-
+        self.abreviations = {
+                'ICMPv6 Neighbor Discovery - Router Advertisement':'ICMPv6 RA', 
+                'ICMPv6 Neighbor Discovery - Router Solicitation':'ICMPv6 RS',
+                'ICMPv6 Neighbor Discovery - Neighbor Solicitation':'ICMPv6 NS',
+                'IPv6 Extension Header - Hop-by-Hop Options Header':'IPv6 Extension Header'
+                }
         for packet in pcap:
             protocols = list(expand(packet))
             for pr in protocols:
@@ -37,13 +42,19 @@ class Source1():
                     else:
                         destKind = "unicast"
                         self.nUnicastMessages += 1
+                    pr = self.shortenProtocol(pr)
                     source.append(str((destKind, pr)).replace("'", ""))
                     break
         self.sourceCount = Counter(source)
         self.entropy = reduce((lambda x, v: x + Ei(v, len(pcap))), self.sourceCount.itervalues(), 0)
         self.maxEntropy = math.log(len(self.sourceCount.keys()), 2) 
 
-        
+    def shortenProtocol(self, protocol):
+        try:
+            shortProtocol = self.abreviations[protocol]
+            return shortProtocol
+        except KeyError:
+            return protocol
 
     def probabilityPlot(self):
         
@@ -57,7 +68,13 @@ class Source1():
                 width=1280,
                 height=720,
                 xaxis={'title':'Simbolo'},
-                yaxis={'title':'Probabilidad (en escala logaritmica)','type':'log','autorange':True})
+                yaxis={'title':'Probabilidad (en escala logaritmica)','type':'log','autorange':True}, 
+                margin=go.Margin(
+		    l=50,
+		    r=50,
+		    b=100,
+		    t=50,
+		    pad=4))
         fig = go.Figure(data=data, layout=layout)
         return fig
     
