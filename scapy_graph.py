@@ -57,7 +57,7 @@ class Source1():
                 width=1280,
                 height=720,
                 xaxis={'title':'Simbolo'},
-                yaxis={'title':'Probabilidad','type':'log','autorange':True})
+                yaxis={'title':'Probabilidad (en escala logaritmica)','type':'log','autorange':True})
         fig = go.Figure(data=data, layout=layout)
         return fig
     
@@ -83,7 +83,7 @@ class Source1():
         informationTrace = go.Bar(name="Informacion x simbolo",x = keys, y = probs)
         #Magic to show a constant for the entropy
         entropyTrace = go.Scatter(name="Entropia",x = [keys[0],keys[len(keys)-1]], y = [self.entropy, self.entropy])
-        maxEntropyTrace = go.Scatter(name="Entropia M\'axima",x = [keys[0],keys[len(keys)-1]], y = [self.maxEntropy, self.maxEntropy])
+        maxEntropyTrace = go.Scatter(name="Entropia Maxima",x = [keys[0],keys[len(keys)-1]], y = [self.maxEntropy, self.maxEntropy])
         data = [informationTrace, entropyTrace, maxEntropyTrace]
         layout = go.Layout(
                 title='Fuente S1: Informacion de cada simbolo',
