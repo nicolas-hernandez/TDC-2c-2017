@@ -27,10 +27,11 @@ class Source1():
         self.nUnicastMessages = 0
         self.nBrodcastMessages = 0
         self.abreviations = {
-                'ICMPv6 Neighbor Discovery - Router Advertisement':'ICMPv6 RA', 
+                'ICMPv6 Neighbor Discovery - Router Advertisement':'ICMPv6 RA',
+				'ICMPv6 Neighbor Discovery - Neighbor Advertisement':'ICMPv6 NA', 
                 'ICMPv6 Neighbor Discovery - Router Solicitation':'ICMPv6 RS',
                 'ICMPv6 Neighbor Discovery - Neighbor Solicitation':'ICMPv6 NS',
-                'IPv6 Extension Header - Hop-by-Hop Options Header':'IPv6 Extension Header'
+                'IPv6 Extension Header - Hop-by-Hop Options Header':'IPv6 EH'
                 }
         for packet in pcap:
             protocols = list(expand(packet))
