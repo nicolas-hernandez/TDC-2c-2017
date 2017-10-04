@@ -96,12 +96,21 @@ count is the number of apparitions in the pcap
 '''
 
 def countFontS2(pcap_p):
-	'''
-	for p in pcap_p[ARP]:
-		S2.append(str((p.psrc, p.dst)))
-	'''
+	
+	S2 = []
 
-	S2 = [str((p.psrc, p.pdst)).replace("'", "") for p in pcap_p[ARP]]
+	for p in pcap_p[ARP]:
+		opStr = 'Request'		
+		if p.op == 2:
+			opStr = 'Reply'
+
+		S2.append(str((p.psrc, opStr)).replace("'", ""))
+	
+
+	'''
+	# No funciona el short if
+	S2 = [str((p.psrc, (p.op == 1 if 'Request' else 'Reply'))).replace("'", "") for p in pcap_p[ARP]]
+	'''
 
 	S2Count = Counter(S2)
 
