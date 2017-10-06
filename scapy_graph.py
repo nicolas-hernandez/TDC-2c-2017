@@ -17,4 +17,3 @@ if __name__ == "__main__":
     saveFigure(plotter.probabilityPlot(),args.file)
     saveFigure(plotter.informationPlot(),args.file)
     saveFigure(plotter.distributionPlot(),args.file)
-    #Source2(pcap) sale alta superclase aca
