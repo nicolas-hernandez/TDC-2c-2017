@@ -43,12 +43,16 @@ def printEdge(edge):
     ip1I = getIndex(ip1)
     ip2I = getIndex(ip2)
     count = edgesCount[(ip1,ip2)]
-    edges.append((ip1I,ip2I, count))
+    inverse_count = edgesCount[(ip2,ip1)]
+    if count > inverse_count:
+        edges.append((ip1I,ip2I))
+        edge_labels[(ip1I,ip2I)] = "("+str(count)+", "+str(inverse_count)+")"
   
 
 ipMap = {}
 index = -1
 edges = []
+edge_labels = {}
 edgesCount = None
 nodes = []
 labels = {}
@@ -70,16 +74,18 @@ for package in setEd:
 
 
 
-G = nx.MultiGraph()
+G = nx.MultiDiGraph()
 G.add_nodes_from(nodes)
-G.add_weighted_edges_from(edges)
-G.degree(weight='weight')
-pos = nx.spring_layout(G)
+G.add_edges_from(edges)
+
+pos = nx.circular_layout(G)
 
 
 
-#nx.draw_networkx_nodes(G,pos,node_color='r',node_size=500,alpha=0.8)
-#nx.draw_networkx_edges(G,pos,width=8,alpha=0.5,edge_color='r')
+nx.draw_networkx_nodes(G,pos,node_color='w',node_size=500)
+nx.draw_networkx_edges(G,pos,width=1)
 
-nx.draw(G,node_size=500, with_labels=True,labels=labels,width=edgesCount.values())
+nx.draw_networkx_edge_labels(G,pos,edge_labels=edge_labels)
+nx.draw_networkx_labels(G,pos,labels=labels,font_color='r',font_weight='bold')
+
 plt.show()
