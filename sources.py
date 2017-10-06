@@ -16,18 +16,15 @@ class Source1():
                 'IPv6 Extension Header - Hop-by-Hop Options Header':'IPv6 EH'
                 }
         for packet in pcap:
-            protocols = list(expand(packet))
-            for pr in protocols:
-                if not pr in ['Ethernet', 'IP', 'IPv6']:
-                    if packet.dst == "ff:ff:ff:ff:ff:ff":
-                        destKind = "broadcast"
-                        self.nBrodcastMessages += 1
-                    else:
-                        destKind = "unicast"
-                        self.nUnicastMessages += 1
-                    pr = self.shortenProtocol(pr)
-                    source.append(str((destKind, pr)).replace("'", ""))
-                    break
+            protocol = packet.payload.name
+            if packet.dst == "ff:ff:ff:ff:ff:ff":
+                destKind = "broadcast"
+                self.nBrodcastMessages += 1
+            else:
+                destKind = "unicast"
+                self.nUnicastMessages += 1
+            pr = self.shortenProtocol(protocol)
+            source.append(str((destKind, pr)).replace("'", ""))
         self.sourceCount = Counter(source)
         self.entropy = reduce((lambda x, v: x + Ei(v, len(pcap))), self.sourceCount.itervalues(), 0)
         self.maxEntropy = log(len(self.sourceCount.keys()), 2) 
