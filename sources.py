@@ -38,3 +38,11 @@ class Source1():
     
     def name(self):
         return "Fuente 1"
+
+
+class Source2():
+
+    def __init__(self, pcap):
+        source = []
+
+
