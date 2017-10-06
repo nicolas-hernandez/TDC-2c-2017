@@ -41,9 +41,26 @@ class Source1():
 
 
 class Source2():
+'''Source2 tiene que aportar la suficiente informacion como para poder distingir hosts a traves de los paquetes ARP: 
+Los paquetes ARP pueden ser de operacion who-has o is-at, siendo la segunda la respuesta de la primera. Se tomara como supuesto
+que el nodo cuya IP va a ser mas solicitada por who-has va a tener que ser la del default-gateway, ya que las redes analizadas mayormente
+se usan para el acceso a internet (minimizamos totalmente los mensajes ARP entre hosts de la misma red)
 
+Distinguir simbolos:
+La metadata se guarda en forma de tupla (ipsrc , ipdst) del mensaje who-has, pero cada simbolo es solamente ipdst ya que estamos tratando de distinguir al router
+para asi distinguir a los hosts'''
     def __init__(self, pcap):
+        self.metadata = []
         source = []
         for packet in pcap:
-            #Do something
+            if packet.payload.name != "ARP" or packet.payload.op!="who-has":
+                continue
+           self.metadata.append(packet.payload.psrc, packet.payload.pdst) 
+           source.append(packet.payload.pdst)
+        
+        self.sourceCount = Count(source)
+        self.entropy = reduce((lambda x, v: x + Ei(v, len(pcap))), self.sourceCount.itervalues(), 0)
+        self.maxEntropy = log(len(self.sourceCount.keys()), 2) 
 
+    def name(self):
+        return "Fuente 2"

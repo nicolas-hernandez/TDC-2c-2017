@@ -12,7 +12,7 @@ Input file:
 Edges from where nodes are deduced
 Example:
 
- Edges
+
  IP1 IP4
  IP3 IP1 
  
