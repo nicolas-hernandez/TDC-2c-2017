@@ -44,5 +44,6 @@ class Source2():
 
     def __init__(self, pcap):
         source = []
-
+        for packet in pcap:
+            #Do something
 

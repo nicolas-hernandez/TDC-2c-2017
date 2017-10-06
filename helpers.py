@@ -28,7 +28,8 @@ def Ei(x, total):
 Plots figure into the file named <plot_name>_<input_file_name> 
 '''
 def saveFigure(figure, input_file_name):
+    directory = 'graficos/'
     folders = input_file_name.split('/')
     input_file_name = folders[len(folders) - 1]
-    name = 'graficos/' + figure.name()+"_" + input_file_name.replace('pcap', 'png') 
+    name = directory + figure.name()+"_" + input_file_name.replace('pcap', 'png') 
     py.image.save_as(figure.figure, filename=name)
