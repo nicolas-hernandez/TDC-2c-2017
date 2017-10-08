@@ -18,8 +18,8 @@ if __name__ == "__main__":
 	saveFigure(plotter.informationPlot(),args.file)
 	saveFigure(plotter.distributionPlot(),args.file)
 
-	S1 = Source1(pcap)
-	plotter = Plotter(S1)
+	S2 = Source2(pcap)
+	plotter = Plotter(S2)
 	
 	saveFigure(plotter.probabilityPlot(),args.file)
 	saveFigure(plotter.informationPlot(),args.file)
