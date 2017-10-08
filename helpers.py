@@ -1,4 +1,5 @@
 import plotly.plotly as py
+import os
 import math
 def expand(x):
     yield x.name
@@ -28,8 +29,12 @@ def Ei(x, total):
 Plots figure into the file named <plot_name>_<input_file_name> 
 '''
 def saveFigure(figure, input_file_name):
-    directory = 'graficos/'
-    folders = input_file_name.split('/')
-    input_file_name = folders[len(folders) - 1]
-    name = directory + figure.name()+"_" + input_file_name.replace('pcap', 'png') 
-    py.image.save_as(figure.figure, filename=name)
+	directory = 'graficos/'
+
+	if not os.path.exists(directory):
+		os.makedirs(os.path.dirname(directory))	
+    
+	folders = input_file_name.split('/')
+	input_file_name = folders[len(folders) - 1]
+	name = directory + figure.name()+"_" + input_file_name.replace('pcap', 'png') 
+	py.image.save_as(figure.figure, filename=name)
