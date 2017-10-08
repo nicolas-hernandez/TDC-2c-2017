@@ -4,18 +4,14 @@ from sets import Set
 import matplotlib.pyplot as plt
 import networkx as nx
 import collections
+from scapy.all import rdpcap                                              
+from sources import Source2
 
 '''
-Summoned script extension
-Input file:
  
-Edges from where nodes are deduced
-Example:
+Script to generate a visual representation of a network.
+Usage: grapher.py file
 
-
- IP1 IP4
- IP3 IP1 
- 
 '''
 
 
@@ -56,15 +52,18 @@ edge_labels = {}
 edgesCount = None
 nodes = []
 labels = {}
-lines = [line.rstrip('\n') for line in open(sys.argv[1])]
+#lines = [line.rstrip('\n') for line in open(sys.argv[1])]
 
 setEd = Set([])
 arrEd = []
+pcap = rdpcap(sys.argv[1])
+source = Source2(pcap)
+
 #Parse ips
-for line in lines:   
-   newIps = line.split(" ",2)
-   setEd.add((newIps[0],newIps[1]))
-   arrEd.append((newIps[0],newIps[1]))
+for tup in source.metadata:   
+   #newIps = line.split(" ",2)
+   setEd.add(tup)
+   arrEd.append(tup)
 
 edgesCount = collections.Counter(arrEd)
 

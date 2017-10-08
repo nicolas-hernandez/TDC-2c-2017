@@ -44,7 +44,7 @@ class Source2():
 	def __init__(self, pcap):
 		self.metadata = []
 		S2 = []
-		arpPackets = pcap[ARP]
+                arpPackets = pcap[ARP]
 		for packet in arpPackets:
 			self.metadata.append((packet.psrc, packet.pdst))
 			S2.append(packet.pdst)

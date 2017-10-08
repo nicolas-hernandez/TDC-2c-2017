@@ -1,12 +1,12 @@
 import argparse
 from helpers import saveFigure
 from plotter import Plotter
-from sources import Source1
+from sources import * 
 from scapy.all import rdpcap
 
 if __name__ == "__main__":
     #Parse command line arguments
-	parser = argparse.ArgumentParser(description='Script for analizing network packets.')
+	parser = argparse.ArgumentParser(description='Script for plotting network packet related data.')
 	parser.add_argument("file", help="Pcap formatted capture")
 	args = parser.parse_args()
 
@@ -23,4 +23,4 @@ if __name__ == "__main__":
 	
 	saveFigure(plotter.probabilityPlot(),args.file)
 	saveFigure(plotter.informationPlot(),args.file)
-	saveFigure(plotter.distributionPlot(),args.file)
+	#saveFigure(plotter.distributionPlot(),args.file)
