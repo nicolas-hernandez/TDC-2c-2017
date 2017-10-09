@@ -31,7 +31,7 @@ class CsvPrinter():
 
 		folders = pcapFilename.split('/')
 		input_file_name = folders[len(folders) - 1]
-		fileName = directory +pcapFilename.split('.')[0] + self.source.name() + ".csv"
+		fileName = directory + input_file_name.split('.')[0] + self.source.name() + ".csv"
 		with open(fileName, 'wb') as myfile:
 			wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
 			wr.writerow(('Simbolo', 'Probabilidad', 'Informacion'))
