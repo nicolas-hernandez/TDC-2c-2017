@@ -48,6 +48,7 @@ class Source2():
 		for packet in arpPackets:
 			self.metadata.append((packet.psrc, packet.pdst))
 			S2.append(packet.pdst)
+			S2.append(packet.psrc)
 
 		self.sourceCount = Counter(S2)
 		self.entropy = reduce((lambda x, v: x + Ei(v, len(arpPackets))), self.sourceCount.itervalues(), 0)
