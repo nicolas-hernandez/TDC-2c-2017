@@ -1,3 +1,4 @@
+#! /usr/bin/env python2.7
 import argparse
 from helpers import saveFigure
 from plotter import Plotter

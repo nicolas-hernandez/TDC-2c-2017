@@ -1,3 +1,4 @@
+#! /usr/bin/env python2.7
 import sys
 from pylab import *
 from sets import Set
