@@ -30,10 +30,10 @@ class TraceRoute():#MethodObject jajaja
             destinoAlcanzado = False
             for medicion in range(self.tamRafaga):
                 for reintento in range(self.cantReintentos):
-                    tiempoInicio = time.perf_counter()
+                    tiempoInicio = time.time()
                     respuesta = sp.sr1(request,timeout=self.timeout)
-                    tiempoFin = time.perf_counter()
-                    rtt = tiempoFin - tiempoInicio#TODO chequear que sean milisegundos
+                    tiempoFin = time.time()
+                    rtt = (tiempoFin - tiempoInicio)*1000 # time() es en segundos.
                     if respuesta is not None:
                         respuestas.append((respuesta.src, rtt))
                         destinoAlcanzado = self.destino == respuesta.src 
