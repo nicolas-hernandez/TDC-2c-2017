@@ -1,4 +1,7 @@
 # tdc2c2017
+
+#tp1
+
 Se entregan 3 scripts escritos en Python2. tp1.py, scapy_graph.py y grapher.py.
 
 tp1.py: Herramienta pedida por enunciado.
@@ -17,3 +20,5 @@ scapy_graph.py: Genera los demás graficos vistos en el informe (para cada fuent
 
 Por ejemplo:
     python2 scapy_graph,py pcap/TAM_wifi.pcap
+
+#tp2
