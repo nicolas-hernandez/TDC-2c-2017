@@ -16,7 +16,6 @@ class TraceRoute():#MethodObject jajaja
         self.cantReintentos = 3
         self.timeout = 0.5#segs?
         self.maxTtl = 20
-º
         self.destino = sp.Net(dst)
         self.echoRequests = sp.IP(dst=self.destino, ttl=(1,self.maxTtl)) / sp.ICMP()
         self.traced = []
