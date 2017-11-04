@@ -1,0 +1,93 @@
+[
+    {
+        "salto_internacional": false, 
+        "rtt": 108.83059501647949, 
+        "ip_address": "192.168.0.1", 
+        "hop_num": 1
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 85.96820831298828, 
+        "ip_address": "10.0.0.2", 
+        "hop_num": 2
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 107.5873851776123, 
+        "ip_address": "200.3.60.191", 
+        "hop_num": 3
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 105.15732765197754, 
+        "ip_address": "181.88.145.142", 
+        "hop_num": 4
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 124.32160377502441, 
+        "ip_address": "181.88.108.253", 
+        "hop_num": 5
+    }, 
+    {
+        "salto_internacional": true, 
+        "rtt": 177.1538257598877, 
+        "ip_address": "195.22.220.52", 
+        "hop_num": 6
+    }, 
+    {
+        "salto_internacional": true, 
+        "rtt": 135.41717529296875, 
+        "ip_address": "195.22.219.3", 
+        "hop_num": 7
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 129.21457290649414, 
+        "ip_address": "195.22.219.137", 
+        "hop_num": 8
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 142.5856590270996, 
+        "ip_address": "54.240.244.162", 
+        "hop_num": 9
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 139.36195373535156, 
+        "ip_address": "54.240.244.165", 
+        "hop_num": 10
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 137.16135025024414, 
+        "ip_address": "176.32.124.33", 
+        "hop_num": 11
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 0, 
+        "ip_address": null, 
+        "hop_num": 12
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 0, 
+        "ip_address": null, 
+        "hop_num": 13
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 0, 
+        "ip_address": null, 
+        "hop_num": 14
+    }, 
+    {
+        "salto_internacional": true, 
+        "rtt": 151.52783393859863, 
+        "ip_address": "52.84.179.14", 
+        "hop_num": 15
+    }
+]
+

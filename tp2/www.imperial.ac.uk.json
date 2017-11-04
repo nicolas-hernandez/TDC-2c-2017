@@ -1,0 +1,123 @@
+[
+    {
+        "salto_internacional": false, 
+        "rtt": 97.99675941467285, 
+        "ip_address": "192.168.0.1", 
+        "hop_num": 1
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 81.72454833984375, 
+        "ip_address": "10.0.0.2", 
+        "hop_num": 2
+    }, 
+    {
+        "salto_internacional": true, 
+        "rtt": 116.16640090942383, 
+        "ip_address": "200.3.60.191", 
+        "hop_num": 3
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 109.75046157836914, 
+        "ip_address": "181.88.145.142", 
+        "hop_num": 4
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 108.06279182434082, 
+        "ip_address": "181.88.108.253", 
+        "hop_num": 5
+    }, 
+    {
+        "salto_internacional": true, 
+        "rtt": 140.99960327148438, 
+        "ip_address": "195.22.220.210", 
+        "hop_num": 6
+    }, 
+    {
+        "salto_internacional": true, 
+        "rtt": 250.57616233825684, 
+        "ip_address": "89.221.41.177", 
+        "hop_num": 7
+    }, 
+    {
+        "salto_internacional": true, 
+        "rtt": 291.4947509765625, 
+        "ip_address": "80.239.193.161", 
+        "hop_num": 8
+    }, 
+    {
+        "salto_internacional": true, 
+        "rtt": 262.71557807922363, 
+        "ip_address": "62.115.120.176", 
+        "hop_num": 9
+    }, 
+    {
+        "salto_internacional": true, 
+        "rtt": 333.9144229888916, 
+        "ip_address": "62.115.141.91", 
+        "hop_num": 10
+    }, 
+    {
+        "salto_internacional": true, 
+        "rtt": 371.5604305267334, 
+        "ip_address": "62.115.119.145", 
+        "hop_num": 11
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 365.06896018981934, 
+        "ip_address": "62.115.148.159", 
+        "hop_num": 12
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 368.92857551574707, 
+        "ip_address": "146.97.35.197", 
+        "hop_num": 13
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 356.1138153076172, 
+        "ip_address": "146.97.33.2", 
+        "hop_num": 14
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 369.14381980895996, 
+        "ip_address": "146.97.37.134", 
+        "hop_num": 15
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 352.8646469116211, 
+        "ip_address": "146.97.136.90", 
+        "hop_num": 16
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 336.9729995727539, 
+        "ip_address": "194.82.153.181", 
+        "hop_num": 17
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 351.51567459106445, 
+        "ip_address": "155.198.1.104", 
+        "hop_num": 18
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 360.2266788482666, 
+        "ip_address": "155.198.2.206", 
+        "hop_num": 19
+    }, 
+    {
+        "salto_internacional": false, 
+        "rtt": 356.04543685913086, 
+        "ip_address": "146.179.40.24", 
+        "hop_num": 20
+    }
+]
+
