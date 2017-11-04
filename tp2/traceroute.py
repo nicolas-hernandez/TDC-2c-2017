@@ -12,7 +12,7 @@ import cimbala as cb
 class TraceRoute():#MethodObject jajaja
     def __init__(self, dst):
         #TODO configurar bien
-        self.tamRafaga = 30
+        self.tamRafaga = 5
         self.cantReintentos = 3
         self.timeout = 0.5#segs?
         self.maxTtl = 20
@@ -54,10 +54,25 @@ class TraceRoute():#MethodObject jajaja
 
     def calcularSaltosInternacionales(self):
         #detectar outliers se deberia pelear con los nodos null
-        outliers = cb.detectarOutliers([node["rtt"] for node in self.traced])
+        jumpRTTByHop = {}
+        jumps = []
+        lastNode = None
+        for node in self.traced:
+            if self.traced.index(node) == 0:
+                jumpRTTByHop[node["ip_address"]] = 0
+                jumps.append(0)
+            else:
+                jump = abs(float(node["rtt"]) - float(lastNode["rtt"]))
+                jumpRTTByHop[node["ip_address"]] = jump #TODO: Para safar de saltos negativos...
+                jumps.append(jump)
+
+            lastNode = node
+        
+        outliers = cb.detectarOutliers(jumps)
         for node in self.traced:
             if node["rtt"] is not None:
-                node["salto_internacional"] = node["rtt"] in outliers
+                isInternational = jumpRTTByHop[node["ip_address"]] in outliers
+                node["salto_internacional"] = isInternational 
 
 
     def analizarRespuestas(self, respuestas):

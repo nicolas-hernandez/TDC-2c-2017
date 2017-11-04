@@ -1,17 +1,10 @@
 import numpy as np
 import scipy.stats as stats
 
-def detectarOutliers(mediciones):
-    rttDifs = []
-    rttAnterior = 0
+def detectarOutliers(jumps):
+    outliers = cimbala(jumps)
 
-    for medicion in mediciones:
-        rttDifs.append(float(medicion) - rttAnterior)
-        rttAnterior = float(medicion)
-
-    outliers = cimbala(rttDifs)
-
-    print("rrt difs by jumps: " + str(rttDifs))
+    print("jumps (rtt diffs): " + str(jumps))
     print("outliers by jumps: " + str(outliers))
     
     return outliers
@@ -28,13 +21,15 @@ def cimbala(rttDifs):
             outlier = None
             for rttDif in rttDifs:
                 delta = np.absolute(rttDif - media)
+                #print("delta: " + str(delta) + " t*S: " + str(tg * desvioStandard))
                 if (delta > tg * desvioStandard):
                     outlier = rttDif
                     break
-                if outlier:
-                    rttDifs.remove(outlier)
-                    outliers.append(outlier)
-                    seguirBuscando = True
+            if outlier:
+                rttDifs.remove(outlier)
+                outliers.append(outlier)
+                seguirBuscando = True
+
     return outliers
 
 
