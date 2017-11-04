@@ -12,7 +12,7 @@ import cimbala as cb
 class TraceRoute():#MethodObject jajaja
     def __init__(self, dst):
         #TODO configurar bien
-        self.tamRafaga = 5
+        self.tamRafaga = 30
         self.cantReintentos = 3
         self.timeout = 0.5#segs?
         self.maxTtl = 20
