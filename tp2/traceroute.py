@@ -12,7 +12,7 @@ import cimbala as cb
 class TraceRoute():#MethodObject jajaja
     def __init__(self, dst):
         #TODO configurar bien
-        self.tamRafaga = 3
+        self.tamRafaga = 30
         self.cantReintentos = 3
         self.timeout = 0.5#segs?
         self.maxTtl = 20
@@ -52,10 +52,10 @@ class TraceRoute():#MethodObject jajaja
                 break
         self.calcularSaltosInternacionales()
 
-    def calcularSaltosInternacionales():
+    def calcularSaltosInternacionales(self):
         #detectar outliers se deberia pelear con los nodos null
         outliers = cb.detectarOutliers([node["rtt"] for node in self.traced])
-        for node in self.route.traced:
+        for node in self.traced:
             if node["rtt"] is not None:
                 node["salto_internacional"] = node["rtt"] in outliers
 
@@ -65,11 +65,11 @@ class TraceRoute():#MethodObject jajaja
         #respuesta: NO, ver ejemplo de enunciado
         ipDict = {}
         for respuesta in respuestas:
-            if respuesta.src in ipDict:
-                rttAcumulado, cantidadAcumulada = ipDict[respuesta.src]
-                ipDict[respuesta.src] = (rttAcumulado + respuesta[1], cantidadAcumulada + 1)
+            if respuesta[0] in ipDict:
+                rttAcumulado, cantidadAcumulada = ipDict[respuesta[0]]
+                ipDict[respuesta[0]] = (rttAcumulado + respuesta[1], cantidadAcumulada + 1)
             else:
-                ipDict[respuesta.src] = (respuesta[1], 1)#respuesta.dst?
+                ipDict[respuesta[0]] = (respuesta[1], 1)#respuesta.dst?
 
         cantidadMaxima = 0
         ipElegida = None

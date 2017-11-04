@@ -1,30 +1,22 @@
 import numpy as np
+import scipy.stats as stats
+
 def detectarOutliers(mediciones):
     rttDifs = []
     rttAnterior = 0
 
     for medicion in mediciones:
-        rttDifs.append(float(medicion[2]) - rttAnterior)
-        rttAnterior = float(medicion[2])
+        rttDifs.append(float(medicion) - rttAnterior)
+        rttAnterior = float(medicion)
 
     outliers = cimbala(rttDifs)
-    #outliersRemoviendo = cimbalaRemoviendo(rttDifs)
 
-    return outliersStandard#, outliers_removiendo
+    print("rrt difs by jumps: " + str(rttDifs))
+    print("outliers by jumps: " + str(outliers))
     
-def cimbala(rttDifs):
-    outliers = []
-    if len(rttDifs) > 0:
-        media = np.mean(rttDifs)
-        desvio_standard = np.std(rttDifs)
-        tg = thompsonGamma(rttDifs)
-    for rttDif in rttDifs:
-        delta = np.absolute(rttDif - media)
-        if (delta > tg * desvio_standard):
-            outliers.append(rttDif)
     return outliers
 
-def cimbalaRemoviendo(rttDifs):
+def cimbala(rttDifs):
     outliers = []
     if len(rttDifs) > 0:
         seguirBuscando = True
@@ -35,8 +27,8 @@ def cimbalaRemoviendo(rttDifs):
             tg = thompsonGamma(rttDifs)
             outlier = None
             for rttDif in rttDifs:
-                delta = np.absolute(rtt_dif - media)
-                if (delta > tg * desvio_standard):
+                delta = np.absolute(rttDif - media)
+                if (delta > tg * desvioStandard):
                     outlier = rttDif
                     break
                 if outlier:
@@ -46,7 +38,7 @@ def cimbalaRemoviendo(rttDifs):
     return outliers
 
 
-def thompson_gamma(rtts):
+def thompsonGamma(rtts):
     n = len(rtts)
     t_a_2 = stats.t.ppf(1 - 0.025, n - 2)
     sqRootN = np.sqrt(n)
