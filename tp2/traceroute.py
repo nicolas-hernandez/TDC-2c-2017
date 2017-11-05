@@ -1,23 +1,19 @@
 import random
-#import sys
 import time
 import scapy.all as sp
 import numpy as np
 import requests as req
-#from scipy import stats
-#Nuestros modulos
-import geo
 import cimbala as cb
 
 class TraceRoute():#MethodObject jajaja
     def __init__(self, dst):
         #TODO configurar bien
-        self.tamRafaga = 30
-        self.cantReintentos = 3
+        self.burstSize = 30
+        self.retryNumber = 3
         self.timeout = 0.5#segs?
         self.maxTtl = 20
-        self.destino = sp.Net(dst)
-        self.echoRequests = sp.IP(dst=self.destino, ttl=(1,self.maxTtl)) / sp.ICMP()
+        self.destination = sp.Net(dst)
+        self.echoRequests = sp.IP(dst=self.destination, ttl=(1,self.maxTtl)) / sp.ICMP()
         self.traced = []
         self.trace()
 
@@ -26,33 +22,28 @@ class TraceRoute():#MethodObject jajaja
         #continenteAnterior = 'SA'
         for request in self.echoRequests:
             request[sp.ICMP].id = random.randint(0, 65535)
-            respuestas = []
-            destinoAlcanzado = False
-            for medicion in range(self.tamRafaga):
-                for reintento in range(self.cantReintentos):
-                    tiempoInicio = time.time()
-                    respuesta = sp.sr1(request,timeout=self.timeout)
-                    tiempoFin = time.time()
-                    rtt = (tiempoFin - tiempoInicio)*1000 # time() es en segundos.
-                    if respuesta is not None:
-                        respuestas.append((respuesta.src, rtt))
-                        destinoAlcanzado = self.destino == respuesta.src 
+            responses = []
+            destinationReached = False
+            for medicion in range(self.burstSize):
+                for reintento in range(self.retryNumber):
+                    initTime = time.time()
+                    response = sp.sr1(request,timeout=self.timeout)
+                    endTime = time.time()
+                    rtt = (endTime - initTime)*1000 # time() es en segundos.
+                    if response is not None:
+                        responses.append((response.src, rtt))
+                        destinationReached = self.destination == response.src 
                         break
 
-            hop, rttToHop = self.analizarRespuestas(respuestas)
-            #continenteActual = geo.continenteDeIP(hop)
-            #if continenteAnterior != continenteActual:
-            #    saltoInternacional = True
-            #else:
-            #    saltoInternacional = False
-            #continenteAnterior = continenteActual
+            hop, rttToHop = self.analyzeResponses(responses)
+
             self.traced.append({"rtt":rttToHop, "ip_address":hop, "salto_internacional":None, "hop_num":hopCount})
             hopCount = hopCount + 1 
-            if destinoAlcanzado:
+            if destinationReached:
                 break
-        self.calcularSaltosInternacionales()
+        self.calculateInternationJumps()
 
-    def calcularSaltosInternacionales(self):
+    def calculateInternationJumps(self):
         #detectar outliers se deberia pelear con los nodos null
         jumpRTTByHop = {}
         jumps = []
@@ -68,34 +59,34 @@ class TraceRoute():#MethodObject jajaja
 
             lastNode = node
         
-        outliers = cb.detectarOutliers(jumps)
+        outliers = cb.detectOutliers(jumps)
         for node in self.traced:
             if node["rtt"] is not None:
                 isInternational = jumpRTTByHop[node["ip_address"]] in outliers
                 node["salto_internacional"] = isInternational 
 
 
-    def analizarRespuestas(self, respuestas):
+    def analyzeResponses(self, responses):
         #TODO rtt deberia bancarla aun si no nos responden?
-        #respuesta: NO, ver ejemplo de enunciado
+        #response: NO, ver ejemplo de enunciado
         ipDict = {}
-        for respuesta in respuestas:
-            if respuesta[0] in ipDict:
-                rttAcumulado, cantidadAcumulada = ipDict[respuesta[0]]
-                ipDict[respuesta[0]] = (rttAcumulado + respuesta[1], cantidadAcumulada + 1)
+        for response in responses:
+            if response[0] in ipDict:
+                rttAcumulated, quantityAcumulated = ipDict[response[0]]
+                ipDict[response[0]] = (rttAcumulated + response[1], quantityAcumulated + 1)
             else:
-                ipDict[respuesta[0]] = (respuesta[1], 1)#respuesta.dst?
+                ipDict[response[0]] = (response[1], 1)#response.dst?
 
-        cantidadMaxima = 0
-        ipElegida = None
-        rttPromedio = 0
+        quantityMax = 0
+        ipChosen = None
+        rttMean = 0
         for ip in ipDict.keys():
             rttAcum, cant = ipDict[ip]
-            if cant > cantidadMaxima:
-                cantidadMaxima = cant
-                ipElegida = ip
-                rttPromedio = rttAcum / cant
-        return ipElegida, rttPromedio
+            if cant > quantityMax:
+                quantityMax = cant
+                ipChosen = ip
+                rttMean = rttAcum / cant
+        return ipChosen, rttMean
 
 if __name__ == "__main__":
     if getuid() != 0:

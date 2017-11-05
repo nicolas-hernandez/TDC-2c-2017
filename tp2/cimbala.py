@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.stats as stats
 
-def detectarOutliers(jumps):
+def detectOutliers(jumps):
     outliers = cimbala(jumps)
 
     print("jumps (rtt diffs): " + str(jumps))
@@ -12,23 +12,23 @@ def detectarOutliers(jumps):
 def cimbala(rttDifs):
     outliers = []
     if len(rttDifs) > 0:
-        seguirBuscando = True
-        while seguirBuscando:
-            seguirBuscando = False
-            media = np.mean(rttDifs)
-            desvioStandard = np.std(rttDifs)
+        keepLooking = True
+        while keepLooking:
+            keepLooking = False
+            mean = np.mean(rttDifs)
+            standardDeviation = np.std(rttDifs)
             tg = thompsonGamma(rttDifs)
             outlier = None
             for rttDif in rttDifs:
-                delta = np.absolute(rttDif - media)
-                #print("delta: " + str(delta) + " t*S: " + str(tg * desvioStandard))
-                if (delta > tg * desvioStandard):
+                delta = np.absolute(rttDif - mean)
+                #print("delta: " + str(delta) + " t*S: " + str(tg * standardDeviation))
+                if (delta > tg * standardDeviation):
                     outlier = rttDif
                     break
             if outlier:
                 rttDifs.remove(outlier)
                 outliers.append(outlier)
-                seguirBuscando = True
+                keepLooking = True
 
     return outliers
 
