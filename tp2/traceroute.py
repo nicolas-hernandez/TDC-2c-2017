@@ -11,7 +11,7 @@ class TraceRoute():#MethodObject jajaja
         self.burstSize = 30
         self.retryNumber = 3
         self.timeout = 0.5#segs?
-        self.maxTtl = 20
+        self.maxTtl = 30
         self.destination = sp.Net(dst)
         self.echoRequests = sp.IP(dst=self.destination, ttl=(1,self.maxTtl)) / sp.ICMP()
         self.traced = []
@@ -41,9 +41,29 @@ class TraceRoute():#MethodObject jajaja
             hopCount = hopCount + 1 
             if destinationReached:
                 break
-        self.calculateInternationJumps()
 
-    def calculateInternationJumps(self):
+        hopsWithoutRTT = []
+
+        count = len(self.traced)
+
+        total = 0
+
+        for hop in self.traced:
+            if hop["rtt"] == 0:
+                hopsWithoutRTT.append(self.traced.index(hop))
+            else:
+                total += hop["rtt"]
+        
+        prom = total/count
+
+        for index in hopsWithoutRTT:
+            hop = self.traced[index]
+            hop["rtt"] = prom
+            self.traced[index] = hop
+                
+        self.calculateInternationalJumps()
+
+    def calculateInternationalJumps(self):
         #detectar outliers se deberia pelear con los nodos null
         jumpRTTByHop = {}
         jumps = []

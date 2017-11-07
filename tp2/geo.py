@@ -83,6 +83,8 @@ if __name__ == "__main__":
         print('Ejecutar con permisos de administrador')
         exit(1)
     #university = "www.imperial.ac.uk.json"
-    university = "www.stanford.edu.json"
+    #university = "www.kuleuven.be.json"
+    university = "www.uzh.ch.json"
+    #university = "www.stanford.edu.json"
     #university = "www.unc.edu.ar.json"
     geolocateTraceroute(university)
