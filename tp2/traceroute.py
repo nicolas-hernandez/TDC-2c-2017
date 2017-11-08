@@ -4,11 +4,11 @@ import scapy.all as sp
 import numpy as np
 import requests as req
 import cimbala as cb
+from copy import deepcopy
 
 class TraceRoute():#MethodObject jajaja
     def __init__(self, dst):
-        #TODO configurar bien
-        self.burstSize = 30
+        self.burstSize = 3
         self.retryNumber = 3
         self.timeout = 0.5#segs?
         self.maxTtl = 30
@@ -49,27 +49,26 @@ class TraceRoute():#MethodObject jajaja
         total = 0
 
         for hop in self.traced:
-            if hop["rtt"] == 0:
+            if hop["rtt"] == None:
                 hopsWithoutRTT.append(self.traced.index(hop))
             else:
                 total += hop["rtt"]
         
         prom = total/count
 
+        self.cimbalaTraced = deepcopy(self.traced) 
         for index in hopsWithoutRTT:
-            hop = self.traced[index]
+            hop = self.cimbalaTraced[index]
             hop["rtt"] = prom
-            self.traced[index] = hop
                 
         self.calculateInternationalJumps()
 
     def calculateInternationalJumps(self):
-        #detectar outliers se deberia pelear con los nodos null
         jumpRTTByHop = {}
         jumps = []
         lastNode = None
-        for node in self.traced:
-            if self.traced.index(node) == 0:
+        for node in self.cimbalaTraced:
+            if self.cimbalaTraced.index(node) == 0:
                 jumpRTTByHop[node["ip_address"]] = 0
                 jumps.append(0)
             else:
@@ -87,15 +86,15 @@ class TraceRoute():#MethodObject jajaja
 
 
     def analyzeResponses(self, responses):
-        #TODO rtt deberia bancarla aun si no nos responden?
-        #response: NO, ver ejemplo de enunciado
         ipDict = {}
+        if len(responses) == 0:
+            return (None, None)
         for response in responses:
             if response[0] in ipDict:
                 rttAcumulated, quantityAcumulated = ipDict[response[0]]
                 ipDict[response[0]] = (rttAcumulated + response[1], quantityAcumulated + 1)
             else:
-                ipDict[response[0]] = (response[1], 1)#response.dst?
+                ipDict[response[0]] = (response[1], 1)
 
         quantityMax = 0
         ipChosen = None
