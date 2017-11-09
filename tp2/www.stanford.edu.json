@@ -66,20 +66,20 @@
         "hop_num": 11
     },
     {
-        "salto_internacional": false,
-        "rtt": 100.24563919081999,
+        "salto_internacional": null,
+        "rtt": null,
         "ip_address": null,
         "hop_num": 12
     },
     {
-        "salto_internacional": false,
-        "rtt": 100.24563919081999,
+        "salto_internacional": null,
+        "rtt": null,
         "ip_address": null,
         "hop_num": 13
     },
     {
-        "salto_internacional": false,
-        "rtt": 100.24563919081999,
+        "salto_internacional": null,
+        "rtt": null,
         "ip_address": null,
         "hop_num": 14
     },

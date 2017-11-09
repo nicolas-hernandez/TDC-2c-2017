@@ -8,8 +8,8 @@ if __name__ == "__main__":
         exit(1)
     #university = "www.imperial.ac.uk"
     #university = "www.kuleuven.be"
-    university = "www.uzh.ch"
-    #university = "www.stanford.edu"
+    #university = "www.uzh.ch"
+    university = "www.stanford.edu"
     #university = "www.unr.edu.ar" #NO RESPONDE EL DESTINO (BLOQUEADO POR FIREWALL?)
     #university = "www.unc.edu.ar"
     route = tr.TraceRoute(university)

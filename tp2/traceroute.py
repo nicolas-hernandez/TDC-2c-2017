@@ -8,7 +8,7 @@ from copy import deepcopy
 
 class TraceRoute():#MethodObject jajaja
     def __init__(self, dst):
-        self.burstSize = 3
+        self.burstSize = 30
         self.retryNumber = 3
         self.timeout = 0.5#segs?
         self.maxTtl = 30
