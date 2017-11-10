@@ -6,9 +6,9 @@ import scipy.stats as stats
 import numpy as np
 from plotly.graph_objs import *
 
-#university = "www.stanford.edu"
+university = "www.stanford.edu"
 #university = "www.unc.edu.ar"
-university = "www.imperial.ac.uk"
+#university = "www.imperial.ac.uk"
 #university = "www.uzh.ch"
 
 plotly.tools.set_credentials_file(username='rkapobel', api_key='GTJLAtLjDpoZ4TRBvCKO')
@@ -35,7 +35,7 @@ rttDifs = [abs(x - rtts[i - 1]) if i > 0 else 0 for i, x in enumerate(rtts)]
 Xp = np.mean(rttDifs)
 S = np.std(rttDifs)
 
-stats = [(x - Xp)/S for x in rtts]
+stats = [abs(x - Xp)/S for x in rttDifs]
 
 trace0 = Scatter(
     x=ips,#range(0, len(rttDifs))
