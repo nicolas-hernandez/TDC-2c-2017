@@ -2,29 +2,54 @@ import json, ast
 from pprint import pprint
 import plotly
 import plotly.plotly as py
+import scipy.stats as stats
+import numpy as np
 from plotly.graph_objs import *
 
-plotly.tools.set_credentials_file(username='rkapobel', api_key='iae8tklvy560VS2TRQnW')
+#university = "www.stanford.edu"
+#university = "www.unc.edu.ar"
+#university = "www.imperial.ac.uk"
+university = "www.uzh.ch"
 
-with open('www.stanford.edu.json') as data_file:    
+plotly.tools.set_credentials_file(username='rkapobel', api_key='GTJLAtLjDpoZ4TRBvCKO')
+
+with open(university+'.json') as data_file:    
     data = json.load(data_file)
 
 #pprint(data)
 
-rtts = []
+rtts = [hop["rtt"] if hop["ip_address"] != None else 0 for hop in data]
 
-for hop in data:
-    if hop["ip_address"] != None:
-        rtts.append(hop["rtt"])
+mean = np.mean(rtts)
 
+rtts = [rtt if rtt > 0 else mean for rtt in rtts]
+
+print(rtts)
+
+ips = [hop["ip_address"] if hop["ip_address"] != None else i for i, hop in enumerate(data)]
 rttDifs = [abs(x - rtts[i - 1]) for i, x in enumerate(rtts) if i > 0]
 
+print(ips)
+print(rttDifs)
+
+Xp = np.mean(rttDifs)
+S = np.std(rttDifs)
+
+stats = [(x - Xp)/S for x in rtts]
+
 trace0 = Scatter(
-    x=range(0, len(rttDifs)),
+    x=ips,#range(0, len(rttDifs))
     y=rttDifs
 )
 
-data = Data([trace0])
+trace1 = Scatter(
+    x=ips,#range(0, len(rttDifs))
+    y=stats
+)
 
-py.plot(data, filename = 'basic-line')
+data0 = Data([trace0])
+data1 = Data([trace1])
+
+py.plot(data0, filename = university+"1")
+py.plot(data1, filename = university+"2")
 
