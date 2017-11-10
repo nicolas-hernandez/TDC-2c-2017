@@ -8,8 +8,8 @@ from plotly.graph_objs import *
 
 #university = "www.stanford.edu"
 #university = "www.unc.edu.ar"
-#university = "www.imperial.ac.uk"
-university = "www.uzh.ch"
+university = "www.imperial.ac.uk"
+#university = "www.uzh.ch"
 
 plotly.tools.set_credentials_file(username='rkapobel', api_key='GTJLAtLjDpoZ4TRBvCKO')
 
@@ -24,13 +24,13 @@ mean = np.mean(rtts)
 
 rtts = [rtt if rtt > 0 else mean for rtt in rtts]
 
-print(rtts)
+#print(rtts)
 
-ips = [hop["ip_address"] if hop["ip_address"] != None else i for i, hop in enumerate(data)]
-rttDifs = [abs(x - rtts[i - 1]) for i, x in enumerate(rtts) if i > 0]
+ips = [hop["ip_address"] if hop["ip_address"] != None else i+1 for i, hop in enumerate(data)]
+rttDifs = [abs(x - rtts[i - 1]) if i > 0 else 0 for i, x in enumerate(rtts)]
 
-print(ips)
-print(rttDifs)
+#print(ips)
+#print(rttDifs)
 
 Xp = np.mean(rttDifs)
 S = np.std(rttDifs)
