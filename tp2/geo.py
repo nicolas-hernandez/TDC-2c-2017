@@ -82,9 +82,8 @@ if __name__ == "__main__":
     if getuid() != 0:
         print('Ejecutar con permisos de administrador')
         exit(1)
-    #university = "www.imperial.ac.uk.json"
-    #university = "www.kuleuven.be.json"
-    university = "www.uzh.ch.json"
-    #university = "www.stanford.edu.json"
-    #university = "www.unc.edu.ar.json"
-    geolocateTraceroute(university)
+    #Parse command line arguments
+    parser = argparse.ArgumentParser(description='Geolocalizacion de los nodos de una ruta. Genera un mapa con los nodos de la ruta ubicados en el.')
+    parser.add_argument("file", help="archivo con formato json con el output de nuestro traceroute")            
+    args = parser.parse_args()                                            
+    geolocateTraceroute(args.file)
