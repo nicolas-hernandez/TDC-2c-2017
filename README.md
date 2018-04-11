@@ -1,4 +1,4 @@
-# tdc2c2017
+# Teoría de las comunicaciones - 2c - 2017
 
 #tp1
 
